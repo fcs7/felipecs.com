@@ -1,0 +1,254 @@
+/* ============================================
+   felipecs.com — Estilos principais
+   ============================================ */
+
+/* --- Design Tokens --- */
+:root {
+  --bg-primary: #07070a;
+  --bg-secondary: #12121e;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-hover-bg: rgba(255, 255, 255, 0.07);
+  --card-hover-border: rgba(130, 130, 255, 0.2);
+  --card-hover-glow: rgba(99, 102, 241, 0.12);
+  --text-primary: #e2e2e8;
+  --text-secondary: #6b6b80;
+  --accent: #818cf8;
+  --radius: 16px;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, sans-serif;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* --- Base --- */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--bg-secondary) 0%, transparent 70%);
+}
+
+/* --- Noise overlay --- */
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* --- Layout --- */
+.header,
+.main,
+.footer {
+  width: 100%;
+  max-width: 720px;
+  padding-inline: var(--space-md);
+}
+
+/* --- Header --- */
+.header {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  text-align: center;
+  animation: fadeInDown 0.8s ease-out both;
+}
+
+.header__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(
+    135deg,
+    var(--text-primary) 0%,
+    var(--accent) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header__tagline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(0.875rem, 2vw, 1.05rem);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* --- Cards Grid --- */
+.main {
+  flex: 1;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-sm);
+}
+
+/* --- Card --- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-sm);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition:
+    transform var(--transition),
+    background var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  /* fade-in animation — triggered by JS */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card.is-visible {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Stagger cards */
+.card:nth-child(1).is-visible { animation-delay: 0s; }
+.card:nth-child(2).is-visible { animation-delay: 0.1s; }
+.card:nth-child(3).is-visible { animation-delay: 0.2s; }
+.card:nth-child(4).is-visible { animation-delay: 0.3s; }
+.card:nth-child(5).is-visible { animation-delay: 0.4s; }
+.card:nth-child(6).is-visible { animation-delay: 0.5s; }
+
+.card:hover {
+  transform: scale(1.03);
+  background: var(--card-hover-bg);
+  border-color: var(--card-hover-border);
+  box-shadow: 0 0 40px var(--card-hover-glow);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--accent);
+  transition: color var(--transition);
+}
+
+.card:hover .card__icon {
+  color: var(--text-primary);
+}
+
+.card__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+/* --- Footer --- */
+.footer {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-md);
+  text-align: center;
+  animation: fadeInDown 0.8s ease-out 0.4s both;
+}
+
+.footer p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+/* --- Keyframes --- */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-md);
+  }
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .card {
+    opacity: 1;
+    transform: none;
+  }
+}
